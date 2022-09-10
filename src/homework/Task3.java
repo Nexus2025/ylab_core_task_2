@@ -1,5 +1,7 @@
 package homework;
 
+import java.util.Arrays;
+
 public class Task3 {
 
     /*
@@ -24,36 +26,20 @@ public class Task3 {
         System.out.println(fuzzySearch("lw", "cartwheel"));
     }
 
-    public static boolean fuzzySearch(String pattern, String line) {
-        if (pattern == null || line == null || pattern.length() > line.length()) {
+    public static boolean fuzzySearch(String pattern, String str) {
+        if (pattern == null || str == null || pattern.length() > str.length()) {
             return false;
 
         } else {
-            int count = 0;
-            int cursor = 0;
-            char[] patternArr = pattern.toCharArray();
-            char[] lineArr = line.toCharArray();
-
-            loop:
-            for (int i = 0; i < patternArr.length; i++) {
-                if (cursor == lineArr.length) {
-                    break;
-                }
-
-                for (int j = cursor; j < lineArr.length; j++) {
-                    if (count == patternArr.length) {
-                        break loop;
-                    }
-
-                    if (patternArr[i] == lineArr[j]) {
-                        count++;
-                        cursor = j + 1;
-                        break;
-                    }
+            Boolean[] charsMatching = new Boolean[pattern.length()];
+            for (int i = 0, j = 0; i < pattern.length() && j < str.length(); j++) {
+                if (pattern.charAt(i) == str.charAt(j)) {
+                    charsMatching[i] = true;
+                    i++;
                 }
             }
 
-            return count == patternArr.length;
+            return Arrays.stream(charsMatching).allMatch(e -> e != null && e == true);
         }
     }
 
@@ -64,16 +50,19 @@ public class Task3 {
         boolean actual2 = fuzzySearch("", "");
         assert actual2;
 
-        boolean actual3 = fuzzySearch(null, null);
-        assert !actual3;
+        boolean actual3 = fuzzySearch(" ", "etc modv");
+        assert actual3;
 
-        boolean actual4 = fuzzySearch("abcd", "abc");
+        boolean actual4 = fuzzySearch(null, null);
         assert !actual4;
 
-        boolean actual5 = fuzzySearch("etcmod", "tcmode");
+        boolean actual5 = fuzzySearch("abcd", "abc");
         assert !actual5;
 
-        boolean actual6 = fuzzySearch("etcmodc", "etcmodv");
+        boolean actual6 = fuzzySearch("etcmod", "tcmode");
         assert !actual6;
+
+        boolean actual7 = fuzzySearch("etcmodc", "etcmodv");
+        assert !actual7;
     }
 }
