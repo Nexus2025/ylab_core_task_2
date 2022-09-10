@@ -67,11 +67,8 @@ public class Task1 {
      */
 
     public static void main(String[] args) {
-        Consumer<Map<String, Long>> print = map -> {
-            for(Map.Entry<String, Long> entry : map.entrySet()) {
-                System.out.printf("Key: %s \nValue: %d\n", entry.getKey(), entry.getValue());
-            }
-        };
+        Consumer<Map<String, Long>> print = map -> map
+                .forEach((key, value) -> System.out.printf("Key: %s \nValue: %d\n", key, value));
 
         convertToMap(RAW_DATA).ifPresentOrElse(print, () -> System.out.println("Array is null"));
     }
